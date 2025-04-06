@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Role Management cURL Scenarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .command { background-color: #f0f0f0; font-family: monospace; padding: 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Role Management cURL Scenarios</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Description</th>
+                <th>cURL Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Create Role</td>
+                <td>Create a new role with permissions</td>
+                <td><pre class="command">curl -X POST http://localhost:5000/api/v1/roles \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "editor",
+    "description": "Content editor role",
+    "permissions": ["PERMISSION_ID_1", "PERMISSION_ID_2"]
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Get All Roles</td>
+                <td>Retrieve list of all roles</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/roles \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Single Role</td>
+                <td>Retrieve details of a specific role</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/roles/ROLE_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Update Role</td>
+                <td>Update role details</td>
+                <td><pre class="command">curl -X PUT http://localhost:5000/api/v1/roles/ROLE_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "updated_editor",
+    "permissions": ["NEW_PERMISSION_ID_1", "NEW_PERMISSION_ID_2"]
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Delete Role</td>
+                <td>Remove a role</td>
+                <td><pre class="command">curl -X DELETE http://localhost:5000/api/v1/roles/ROLE_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Users with Role</td>
+                <td>Retrieve users assigned to a specific role</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/roles/ROLE_ID/users \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Add Permissions to Role</td>
+                <td>Add new permissions to an existing role</td>
+                <td><pre class="command">curl -X POST http://localhost:5000/api/v1/roles/ROLE_ID/permissions \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "permissions": ["PERMISSION_ID_3", "PERMISSION_ID_4"]
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Remove Permissions from Role</td>
+                <td>Remove specific permissions from a role</td>
+                <td><pre class="command">curl -X DELETE http://localhost:5000/api/v1/roles/ROLE_ID/permissions \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "permissions": ["PERMISSION_ID_1", "PERMISSION_ID_2"]
+}'</pre></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

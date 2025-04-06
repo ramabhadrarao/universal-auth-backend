@@ -393,3 +393,69 @@ const sendTokenResponse = (user, statusCode, res) => {
       token
     });
 };
+
+/**
+ * @desc    Resend email verification token
+ * @route   POST /api/v1/auth/resend-verification
+ * @access  Public
+ */
+exports.resendVerificationToken = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    // Check if email is provided
+    if (!email) {
+      return next(new ErrorResponse('Please provide an email', 400));
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      // Don't reveal if email exists or not
+      return res.status(200).json({
+        success: true,
+        message: 'If a user with that email exists, a verification link has been sent'
+      });
+    }
+
+    // Check if user is already verified
+    if (user.isEmailVerified) {
+      return next(new ErrorResponse('Email is already verified', 400));
+    }
+
+    // Generate new verification token
+    const verificationToken = user.getEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Create verification URL
+    const verificationUrl = `${process.env.CLIENT_URL}/api/v1/auth/verifyemail/${verificationToken}`;
+    
+    try {
+      // Send verification email
+      await sendEmail({
+        to: user.email,
+        subject: 'Email Verification',
+        template: 'emailVerification',
+        data: {
+          name: user.name,
+          verificationUrl
+        }
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Verification email resent'
+      });
+    } catch (err) {
+      // If email fails, reset the verification token
+      user.emailVerificationToken = undefined;
+      user.emailVerificationExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      return next(new ErrorResponse('Email could not be sent', 500));
+    }
+  } catch (err) {
+    next(err);
+  }
+};

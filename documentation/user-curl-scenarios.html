@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management cURL Scenarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .command { background-color: #f0f0f0; font-family: monospace; padding: 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>User Management cURL Scenarios</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Description</th>
+                <th>cURL Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Create User</td>
+                <td>Create a new user by admin</td>
+                <td><pre class="command">curl -X POST http://localhost:5000/api/v1/users \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "New User",
+    "email": "newuser@example.com",
+    "password": "Password123!",
+    "status": "active",
+    "roles": ["user"]
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Get All Users</td>
+                <td>Retrieve list of users with pagination</td>
+                <td><pre class="command">curl -X GET "http://localhost:5000/api/v1/users?page=1&limit=10" \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Single User</td>
+                <td>Retrieve details of a specific user</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/users/USER_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Update User</td>
+                <td>Update user details</td>
+                <td><pre class="command">curl -X PUT http://localhost:5000/api/v1/users/USER_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Updated Name",
+    "email": "updated@example.com",
+    "roles": ["admin"]
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Update User Status</td>
+                <td>Change user account status</td>
+                <td><pre class="command">curl -X PUT http://localhost:5000/api/v1/users/USER_ID/status \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "status": "suspended"
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Delete User</td>
+                <td>Remove a user account</td>
+                <td><pre class="command">curl -X DELETE http://localhost:5000/api/v1/users/USER_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get User Statistics</td>
+                <td>Retrieve user count by status</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/users/stats \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Permission Management cURL Scenarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .command { background-color: #f0f0f0; font-family: monospace; padding: 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Permission Management cURL Scenarios</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Description</th>
+                <th>cURL Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Create Permission</td>
+                <td>Create a new permission</td>
+                <td><pre class="command">curl -X POST http://localhost:5000/api/v1/permissions \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "read_users",
+    "description": "Can view user details",
+    "resource": "users",
+    "action": "read",
+    "attributes": {
+        "fields": ["name", "email"]
+    }
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Get All Permissions</td>
+                <td>Retrieve list of all permissions</td>
+                <td><pre class="command">curl -X GET "http://localhost:5000/api/v1/permissions?resource=users&action=read" \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Single Permission</td>
+                <td>Retrieve details of a specific permission</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/permissions/PERMISSION_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Update Permission</td>
+                <td>Modify an existing permission</td>
+                <td><pre class="command">curl -X PUT http://localhost:5000/api/v1/permissions/PERMISSION_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "read_users_extended",
+    "description": "Can view more user details",
+    "attributes": {
+        "fields": ["name", "email", "phone"]
+    }
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Delete Permission</td>
+                <td>Remove a permission</td>
+                <td><pre class="command">curl -X DELETE http://localhost:5000/api/v1/permissions/PERMISSION_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Roles with Permission</td>
+                <td>Retrieve roles assigned to a specific permission</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/permissions/PERMISSION_ID/roles \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get Unique Resources</td>
+                <td>Retrieve list of unique permission resources</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/permissions/resources \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Assign Permission to User</td>
+                <td>Directly assign a permission to a specific user</td>
+                <td><pre class="command">curl -X POST http://localhost:5000/api/v1/permissions/PERMISSION_ID/users/USER_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "conditions": {
+        "department": "marketing"
+    },
+    "resourceId": "specific_resource_id",
+    "tenant": "main_company",
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "deny": false
+}'</pre></td>
+            </tr>
+            <tr>
+                <td>Remove Permission from User</td>
+                <td>Remove a specific permission from a user</td>
+                <td><pre class="command">curl -X DELETE "http://localhost:5000/api/v1/permissions/PERMISSION_ID/users/USER_ID?resourceId=OPTIONAL_RESOURCE_ID" \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+            <tr>
+                <td>Get User's Direct Permissions</td>
+                <td>Retrieve permissions directly assigned to a user</td>
+                <td><pre class="command">curl -X GET http://localhost:5000/api/v1/permissions/users/USER_ID \
+-H "Authorization: Bearer ADMIN_JWT_TOKEN"</pre></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

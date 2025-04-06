@@ -10,7 +10,8 @@ const {
   resetPassword,
   updateDetails,
   updatePassword,
-  verifyEmail
+  verifyEmail,
+  resendVerificationToken
 } = require('../controllers/auth.controller');
 
 const { protect } = require('../middlewares/auth.middleware');
@@ -21,7 +22,8 @@ router.post('/login', login);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resettoken', resetPassword);
 router.get('/verifyemail/:verificationtoken', verifyEmail);
-
+// New route for resending verification token
+router.post('/resend-verification', resendVerificationToken);
 // Protected routes
 router.use(protect); // All routes below this require authentication
 
