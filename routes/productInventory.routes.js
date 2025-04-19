@@ -14,14 +14,13 @@ const {
 
 const { protect, authorize } = require('../middlewares/auth.middleware');
 const validateRequest = require('../middlewares/validator.middleware');
-const { schemas } = require('../utils/validation');
 
 // Protect all routes
 router.use(protect);
 
 router.route('/')
   .get(getAllInventory)
-  .post(validateRequest(schemas.createInventory), addInventory);
+  .post(addInventory);
 
 router.route('/summary')
   .get(getInventorySummary);
@@ -31,9 +30,9 @@ router.route('/transactions')
 
 router.route('/:id')
   .get(getInventoryItem)
-  .put(validateRequest(schemas.updateInventory), updateInventory);
+  .put(updateInventory);
 
 router.route('/:id/status')
-  .put(validateRequest(schemas.updateInventoryStatus), updateInventoryStatus);
+  .put(updateInventoryStatus);
 
 module.exports = router;

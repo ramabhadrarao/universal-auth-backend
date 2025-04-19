@@ -24,43 +24,39 @@ const {
 
 const { protect, authorize } = require('../middlewares/auth.middleware');
 const validateRequest = require('../middlewares/validator.middleware');
-const { schemas } = require('../utils/validation');
-
-// Protect all routes
-router.use(protect);
 
 // Product routes
 router.route('/')
   .get(getProducts)
-  .post(validateRequest(schemas.createProduct), createProduct);
+  .post(protect, createProduct);
 
 router.route('/low-inventory')
-  .get(getLowInventoryProducts);
+  .get(protect, getLowInventoryProducts);
 
 router.route('/expiring-soon')
-  .get(getExpiringProducts);
+  .get(protect, getExpiringProducts);
 
 router.route('/:id')
-  .get(getProduct)
-  .put(validateRequest(schemas.updateProduct), updateProduct)
-  .delete(authorize('admin'), deleteProduct);
+  .get(protect, getProduct)
+  .put(protect, updateProduct)
+  .delete(protect, authorize('admin'), deleteProduct);
 
 router.route('/:id/inventory')
-  .get(getProductInventory);
+  .get(protect, getProductInventory);
 
 router.route('/:id/usage-stats')
-  .get(getProductUsageStats);
+  .get(protect, getProductUsageStats);
 
 // Product alternatives routes
 router.route('/:productId/alternatives')
-  .get(getProductAlternatives)
-  .post(validateRequest(schemas.createProductAlternative), addProductAlternative);
+  .get(protect, getProductAlternatives)
+  .post(protect, addProductAlternative);
 
 router.route('/:productId/alternatives/:id')
-  .put(validateRequest(schemas.updateProductAlternative), updateProductAlternative)
-  .delete(deleteProductAlternative);
+  .put(protect, updateProductAlternative)
+  .delete(protect, deleteProductAlternative);
 
 router.route('/:productId/alternative-for')
-  .get(getAlternativeFor);
+  .get(protect, getAlternativeFor);
 
 module.exports = router;

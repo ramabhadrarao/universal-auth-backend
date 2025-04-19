@@ -14,6 +14,7 @@ const ProductSchema = new mongoose.Schema({
     trim: true,
     maxlength: [100, 'Product code cannot be more than 100 characters'],
     unique: true
+    // Removed index: true since we're using schema.index() below
   },
   principle: {
     type: mongoose.Schema.Types.ObjectId,
@@ -121,7 +122,7 @@ const ProductSchema = new mongoose.Schema({
 
 // Create indexes to optimize queries
 ProductSchema.index({ name: 1 });
-ProductSchema.index({ productCode: 1 });
+ProductSchema.index({ productCode: 1 }); // Keep only this index definition for productCode
 ProductSchema.index({ principle: 1 });
 ProductSchema.index({ expiryDate: 1 });
 ProductSchema.index({ isActive: 1 });
