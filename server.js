@@ -26,6 +26,10 @@ const categoryApplicationRoutes = require('./routes/categoryApplication.routes')
 const categoryProductRoutes = require('./routes/categoryProduct.routes');
 const categorySpecificationRoutes = require('./routes/categorySpecification.routes');
 const categoryProcedureRoutes = require('./routes/categoryProcedure.routes');
+
+const productRoutes = require('./routes/product.routes');
+const inventoryRoutes = require('./routes/productInventory.routes');
+const productUsageRoutes = require('./routes/productUsage.routes');
 // Import error middleware
 const { errorHandler } = require('./middlewares/error.middleware');
 
@@ -84,6 +88,10 @@ app.use('/api/v1/category-applications', categoryApplicationRoutes);
 app.use('/api/v1/category-products', categoryProductRoutes);
 app.use('/api/v1/category-specifications', categorySpecificationRoutes);
 app.use('/api/v1/category-procedures', categoryProcedureRoutes);
+// Mount the routes
+app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/inventory', inventoryRoutes);
+app.use('/api/v1/product-usage', productUsageRoutes);
 // Base route
 app.get('/', (req, res) => {
   res.status(200).json({

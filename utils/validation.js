@@ -245,6 +245,283 @@ updateCategoryApplication: Joi.object({
   applicationName: Joi.string(),
   description: Joi.string().allow(null, ''),
   isActive: Joi.boolean()
+}),
+// Add to utils/validation.js, in the schemas object
+
+// Product validation
+createProduct: Joi.object({
+  name: Joi.string().trim().max(255).required()
+    .messages({
+      'string.max': 'Product name cannot be more than 255 characters',
+      'any.required': 'Product name is required'
+    }),
+  productCode: Joi.string().trim().max(100).required()
+    .messages({
+      'string.max': 'Product code cannot be more than 100 characters',
+      'any.required': 'Product code is required'
+    }),
+  principle: Joi.string().required()
+    .messages({
+      'any.required': 'Principle is required'
+    }),
+  batchNumber: Joi.string().trim().max(50)
+    .messages({
+      'string.max': 'Batch number cannot be more than 50 characters'
+    }),
+  dpValue: Joi.number().min(0).required()
+    .messages({
+      'number.min': 'Dealer price cannot be negative',
+      'any.required': 'Dealer price is required'
+    }),
+  mrp: Joi.number().min(0).required()
+    .messages({
+      'number.min': 'Maximum retail price cannot be negative',
+      'any.required': 'Maximum retail price is required'
+    }),
+  expiryDate: Joi.date(),
+  quantity: Joi.number().min(0).default(1)
+    .messages({
+      'number.min': 'Quantity cannot be negative'
+    }),
+  description: Joi.string(),
+  isActive: Joi.boolean().default(true),
+  specifications: Joi.array().items(
+    Joi.object({
+      specName: Joi.string().trim().max(100).required()
+        .messages({
+          'string.max': 'Specification name cannot be more than 100 characters',
+          'any.required': 'Specification name is required'
+        }),
+      specValue: Joi.string().required()
+        .messages({
+          'any.required': 'Specification value is required'
+        }),
+      specUnit: Joi.string().trim().max(20)
+        .messages({
+          'string.max': 'Unit cannot be more than 20 characters'
+        })
+    })
+  ),
+  images: Joi.array().items(
+    Joi.object({
+      imagePath: Joi.string().required()
+        .messages({
+          'any.required': 'Image path is required'
+        }),
+      imageType: Joi.string().valid('main', 'thumbnail', 'alternate').default('main'),
+      displayOrder: Joi.number().default(0)
+    })
+  ),
+  documents: Joi.array().items(
+    Joi.object({
+      documentType: Joi.string().required()
+        .messages({
+          'any.required': 'Document type is required'
+        }),
+      documentName: Joi.string().required()
+        .messages({
+          'any.required': 'Document name is required'
+        }),
+      filePath: Joi.string().required()
+        .messages({
+          'any.required': 'File path is required'
+        })
+    })
+  ),
+  initialInventory: Joi.object({
+    quantity: Joi.number().min(1),
+    location: Joi.string().required()
+      .messages({
+        'any.required': 'Location is required for initial inventory'
+      })
+  })
+}),
+
+updateProduct: Joi.object({
+  name: Joi.string().trim().max(255)
+    .messages({
+      'string.max': 'Product name cannot be more than 255 characters'
+    }),
+  productCode: Joi.string().trim().max(100)
+    .messages({
+      'string.max': 'Product code cannot be more than 100 characters'
+    }),
+  principle: Joi.string(),
+  batchNumber: Joi.string().trim().max(50)
+    .messages({
+      'string.max': 'Batch number cannot be more than 50 characters'
+    }),
+  dpValue: Joi.number().min(0)
+    .messages({
+      'number.min': 'Dealer price cannot be negative'
+    }),
+  mrp: Joi.number().min(0)
+    .messages({
+      'number.min': 'Maximum retail price cannot be negative'
+    }),
+  expiryDate: Joi.date(),
+  quantity: Joi.number().min(0)
+    .messages({
+      'number.min': 'Quantity cannot be negative'
+    }),
+  description: Joi.string(),
+  isActive: Joi.boolean(),
+  specifications: Joi.array().items(
+    Joi.object({
+      specName: Joi.string().trim().max(100).required()
+        .messages({
+          'string.max': 'Specification name cannot be more than 100 characters',
+          'any.required': 'Specification name is required'
+        }),
+      specValue: Joi.string().required()
+        .messages({
+          'any.required': 'Specification value is required'
+        }),
+      specUnit: Joi.string().trim().max(20)
+        .messages({
+          'string.max': 'Unit cannot be more than 20 characters'
+        })
+    })
+  ),
+  images: Joi.array().items(
+    Joi.object({
+      imagePath: Joi.string().required()
+        .messages({
+          'any.required': 'Image path is required'
+        }),
+      imageType: Joi.string().valid('main', 'thumbnail', 'alternate').default('main'),
+      displayOrder: Joi.number().default(0)
+    })
+  ),
+  documents: Joi.array().items(
+    Joi.object({
+      documentType: Joi.string().required()
+        .messages({
+          'any.required': 'Document type is required'
+        }),
+      documentName: Joi.string().required()
+        .messages({
+          'any.required': 'Document name is required'
+        }),
+      filePath: Joi.string().required()
+        .messages({
+          'any.required': 'File path is required'
+        })
+    })
+  )
+}),
+
+// Inventory validation
+createInventory: Joi.object({
+  product: Joi.string().required()
+    .messages({
+      'any.required': 'Product is required'
+    }),
+  batchNumber: Joi.string().trim().max(50)
+    .messages({
+      'string.max': 'Batch number cannot be more than 50 characters'
+    }),
+  location: Joi.string().trim().max(100)
+    .messages({
+      'string.max': 'Location cannot be more than 100 characters'
+    }),
+  quantity: Joi.number().min(1).required()
+    .messages({
+      'number.min': 'Quantity must be at least 1',
+      'any.required': 'Quantity is required'
+    }),
+  dpValue: Joi.number().min(0)
+    .messages({
+      'number.min': 'Dealer price cannot be negative'
+    }),
+  expiryDate: Joi.date(),
+  receivedDate: Joi.date().default(Date.now),
+  status: Joi.string().valid('Available', 'Reserved', 'Used', 'Expired', 'Damaged').default('Available'),
+  notes: Joi.string()
+}),
+
+updateInventory: Joi.object({
+  quantity: Joi.number().min(0)
+    .messages({
+      'number.min': 'Quantity cannot be negative'
+    }),
+  location: Joi.string().trim().max(100)
+    .messages({
+      'string.max': 'Location cannot be more than 100 characters'
+    }),
+  dpValue: Joi.number().min(0)
+    .messages({
+      'number.min': 'Dealer price cannot be negative'
+    }),
+  expiryDate: Joi.date(),
+  notes: Joi.string()
+}),
+
+updateInventoryStatus: Joi.object({
+  status: Joi.string().valid('Available', 'Reserved', 'Used', 'Expired', 'Damaged').required()
+    .messages({
+      'any.required': 'Status is required',
+      'any.only': 'Status must be one of: Available, Reserved, Used, Expired, Damaged'
+    }),
+  notes: Joi.string(),
+  referenceId: Joi.string(),
+  referenceType: Joi.string().valid('case', 'transfer', 'adjustment', 'receipt')
+}),
+
+// Product Usage validation
+recordProductUsage: Joi.object({
+  product: Joi.string().required()
+    .messages({
+      'any.required': 'Product is required'
+    }),
+  case: Joi.string().required()
+    .messages({
+      'any.required': 'Case is required'
+    }),
+  quantity: Joi.number().min(1).default(1)
+    .messages({
+      'number.min': 'Quantity must be at least 1'
+    }),
+  batchNumber: Joi.string().trim().max(50),
+  usedDate: Joi.date().default(Date.now).required()
+    .messages({
+      'any.required': 'Usage date is required'
+    }),
+  dpValue: Joi.number().min(0)
+    .messages({
+      'number.min': 'Dealer price cannot be negative'
+    }),
+  sellingPrice: Joi.number().min(0)
+    .messages({
+      'number.min': 'Selling price cannot be negative'
+    }),
+  notes: Joi.string()
+}),
+
+updateProductUsage: Joi.object({
+  sellingPrice: Joi.number().min(0)
+    .messages({
+      'number.min': 'Selling price cannot be negative'
+    }),
+  notes: Joi.string()
+}),
+
+// Product Alternatives validation
+createProductAlternative: Joi.object({
+  alternativeProduct: Joi.string().required()
+    .messages({
+      'any.required': 'Alternative product is required'
+    }),
+  compatibilityLevel: Joi.string().valid('Full', 'Partial', 'Emergency Only').default('Full'),
+  priceDifference: Joi.number(),
+  notes: Joi.string(),
+  createReverse: Joi.boolean().default(false)
+}),
+
+updateProductAlternative: Joi.object({
+  compatibilityLevel: Joi.string().valid('Full', 'Partial', 'Emergency Only'),
+  priceDifference: Joi.number(),
+  notes: Joi.string()
 })
 };
 
