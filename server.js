@@ -20,7 +20,12 @@ const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const roleRoutes = require('./routes/role.routes');
 const permissionRoutes = require('./routes/permission.routes');
-
+const categoryRoutes = require('./routes/category.routes');
+const subcategoryRoutes = require('./routes/subcategory.routes');
+const categoryApplicationRoutes = require('./routes/categoryApplication.routes');
+const categoryProductRoutes = require('./routes/categoryProduct.routes');
+const categorySpecificationRoutes = require('./routes/categorySpecification.routes');
+const categoryProcedureRoutes = require('./routes/categoryProcedure.routes');
 // Import error middleware
 const { errorHandler } = require('./middlewares/error.middleware');
 
@@ -73,7 +78,12 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/roles', roleRoutes);
 app.use('/api/v1/permissions', permissionRoutes);
-
+app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/subcategories', subcategoryRoutes);
+app.use('/api/v1/category-applications', categoryApplicationRoutes);
+app.use('/api/v1/category-products', categoryProductRoutes);
+app.use('/api/v1/category-specifications', categorySpecificationRoutes);
+app.use('/api/v1/category-procedures', categoryProcedureRoutes);
 // Base route
 app.get('/', (req, res) => {
   res.status(200).json({

@@ -223,7 +223,29 @@ const schemas = {
         'any.only': 'Status must be one of: pending, active, suspended, rejected',
         'any.required': 'Status is required'
       })
-  })
+  }),
+  // CategoryApplication validation
+createCategoryApplication: Joi.object({
+  category: Joi.string().required()
+    .messages({
+      'any.required': 'Category is required'
+    }),
+  subcategory: Joi.string().allow(null, ''),
+  applicationName: Joi.string().required()
+    .messages({
+      'any.required': 'Application name is required'
+    }),
+  description: Joi.string().allow(null, ''),
+  isActive: Joi.boolean()
+}),
+
+updateCategoryApplication: Joi.object({
+  category: Joi.string(),
+  subcategory: Joi.string().allow(null, ''),
+  applicationName: Joi.string(),
+  description: Joi.string().allow(null, ''),
+  isActive: Joi.boolean()
+})
 };
 
 module.exports = {
