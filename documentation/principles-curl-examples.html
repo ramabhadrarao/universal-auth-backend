@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Principles Module API - cURL Examples</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px;
+            color: #333;
+        }
+        h1 { 
+            color: #2c3e50; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #eee;
+        }
+        h2 { 
+            color: #3498db; 
+            margin-top: 30px; 
+            padding-bottom: 5px; 
+            border-bottom: 1px solid #eee;
+        }
+        h3 { 
+            color: #2980b9; 
+            margin-top: 20px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 20px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 12px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #3498db; 
+            color: white; 
+            font-weight: bold; 
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .command { 
+            background-color: #f6f8fa; 
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .endpoint {
+            font-family: monospace;
+            background-color: #e8f4fc;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid #bce8f1;
+        }
+        .method {
+            display: inline-block;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .get {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .post {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        .put {
+            background-color: #fcf8e3;
+            color: #8a6d3b;
+        }
+        .delete {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Principles Module API - cURL Examples</h1>
+    
+    <div class="note">
+        <strong>Note:</strong> Replace <code>YOUR_JWT_TOKEN</code> with a valid JWT token obtained through login. Replace IDs (like <code>PRINCIPLE_ID</code>) with actual IDs from your database.
+    </div>
+
+    <h2>Main Principle Endpoints</h2>
+    
+    <h3><span class="method get">GET</span> Get All Principles</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles?page=1&limit=10" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Create New Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "ABC Medical Supplies",
+    "contactPerson": "John Smith",
+    "email": "contact@abcmedical.com",
+    "phone": "1234567890",
+    "address": "123 Medical Plaza, City",
+    "website": "https://abcmedical.com",
+    "gstNumber": "GST123456",
+    "paymentTerms": "Net 30",
+    "creditDays": 30
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "contactPerson": "Jane Smith",
+    "email": "jane@abcmedical.com",
+    "phone": "9876543210"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Principle Summary</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/summary</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/summary \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Principles With Agreements</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/with-agreements</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/with-agreements \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Contacts</h2>
+    
+    <h3><span class="method get">GET</span> Get All Contacts For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Contact</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts/CONTACT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Contact to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Sarah Johnson",
+    "designation": "Sales Manager",
+    "department": "Sales",
+    "email": "sarah@abcmedical.com",
+    "phone": "5551234567",
+    "isPrimary": true
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Contact</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts/CONTACT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Sarah Smith",
+    "email": "sarah.smith@abcmedical.com",
+    "phone": "5559876543"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Contact</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts/CONTACT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method put">PUT</span> Set Primary Contact</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/contacts/:id/set-primary</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/contacts/CONTACT_ID/set-primary \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Primary Contacts For All Principles</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/primary-contacts</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/primary-contacts \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Search Contacts</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/search-contacts</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/search-contacts?query=manager" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Categories</h2>
+    
+    <h3><span class="method get">GET</span> Get All Categories For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/categories</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/categories \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Category to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/categories</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/categories \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "category": "CATEGORY_ID",
+    "isPrimary": true,
+    "terms": "Special discount on bulk orders"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Principle Category</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/categories/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/categories/CATEGORY_LINK_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "isPrimary": true,
+    "terms": "Updated terms for this category"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Principle Category</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/categories/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/categories/CATEGORY_LINK_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Primary Categories For All Principles</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/primary-categories</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/primary-categories \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Agreements</h2>
+    
+    <h3><span class="method get">GET</span> Get All Agreements For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Agreement</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements/AGREEMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Agreement to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "agreementType": "Distribution",
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31",
+    "terms": "Exclusive distribution rights for the northern region",
+    "discountPercentage": 15,
+    "paymentTerms": "Net 45",
+    "status": "Active",
+    "documentPath": "/documents/agreements/dist-123.pdf"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Agreement</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements/AGREEMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "endDate": "2025-06-30",
+    "discountPercentage": 20,
+    "terms": "Updated terms with increased discount"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Agreement</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements/AGREEMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method put">PUT</span> Update Agreement Status</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/agreements/:id/status</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/agreements/AGREEMENT_ID/status \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "status": "Cancelled"
+}'</div>
+
+    <h3><span class="method get">GET</span> Get Expiring Agreements</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/expiring-agreements</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/expiring-agreements?days=30" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Visits</h2>
+    
+    <h3><span class="method get">GET</span> Get All Visits For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits?sortBy=visitDate&sortOrder=desc" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Visit</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits/VISIT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Visit to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "visitDate": "2025-05-15",
+    "visitType": "Sales Meeting",
+    "location": "Supplier HQ",
+    "contactsMet": "John Smith, VP Sales",
+    "discussion": "Discussed new product line and pricing",
+    "followUpDate": "2025-06-01",
+    "followUpAction": "Send product specifications"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Visit</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits/VISIT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "discussion": "Discussed new product line, pricing, and delivery schedules",
+    "outcome": "Agreed on 15% discount for bulk orders"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Visit</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits/VISIT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method put">PUT</span> Complete Visit</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits/:id/complete</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits/VISIT_ID/complete \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "outcome": "Successfully negotiated better terms",
+    "discussion": "Detailed meeting notes here...",
+    "followUpDate": "2025-06-15",
+    "followUpAction": "Email product specifications and pricing"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Reschedule Visit</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/visits/:id/reschedule</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/visits/VISIT_ID/reschedule \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "visitDate": "2025-05-20"
+}'</div>
+
+    <h3><span class="method get">GET</span> Get Upcoming Visits</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/upcoming-visits</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/upcoming-visits \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Products</h2>
+    
+    <h3><span class="method get">GET</span> Get All Products For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Principle Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products/PRODUCT_LINK_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Product to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "product": "PRODUCT_ID",
+    "principleProductCode": "ABC-123",
+    "principleProductName": "Advanced Surgical Implant",
+    "unitCost": 500.00,
+    "minimumOrderQuantity": 5,
+    "leadTimeDays": 7,
+    "isPreferred": true
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Principle Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products/PRODUCT_LINK_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "unitCost": 450.00,
+    "minimumOrderQuantity": 3,
+    "leadTimeDays": 5
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Principle Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products/PRODUCT_LINK_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method put">PUT</span> Toggle Preferred Status</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/products/:id/toggle-preferred</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/products/PRODUCT_LINK_ID/toggle-preferred \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Product Pricing</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/product-pricing</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/product-pricing \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Products By Lead Time</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/products-by-lead-time</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/products-by-lead-time?maxDays=7" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Principle Documents</h2>
+    
+    <h3><span class="method get">GET</span> Get All Documents For a Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/documents</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/PRINCIPLE_ID/documents?documentType=Agreement" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Document</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/documents/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/PRINCIPLE_ID/documents/DOCUMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Upload Document to Principle</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/documents</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/principles/PRINCIPLE_ID/documents \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "documentType": "Agreement",
+    "documentName": "Distribution Agreement 2025",
+    "filePath": "/uploads/documents/agreement-123.pdf"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Document</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/documents/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/principles/PRINCIPLE_ID/documents/DOCUMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "documentType": "Contract",
+    "documentName": "Updated Distribution Agreement 2025"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Document</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/:principleId/documents/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/principles/PRINCIPLE_ID/documents/DOCUMENT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Documents By Type</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/documents-by-type/:documentType</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/principles/documents-by-type/Agreement \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Recent Documents</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/principles/recent-documents</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/principles/recent-documents?limit=5" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <script>
+        // Add copy to clipboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const commands = document.querySelectorAll('.command');
+            
+            commands.forEach(command => {
+                command.addEventListener('click', function() {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(this);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    document.execCommand('copy');
+                    selection.removeAllRanges();
+                    
+                    // Visual feedback
+                    const originalBg = this.style.backgroundColor;
+                    this.style.backgroundColor = '#d4edda';
+                    setTimeout(() => {
+                        this.style.backgroundColor = originalBg;
+                    }, 300);
+                });
+                
+                // Add a subtle hint that these are clickable
+                command.title = 'Click to copy to clipboard';
+                command.style.cursor = 'pointer';
+            });
+        });
+    </script>
+</body>
+</html>

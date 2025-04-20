@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products Module API - cURL Examples</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px;
+            color: #333;
+        }
+        h1 { 
+            color: #2c3e50; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #eee;
+        }
+        h2 { 
+            color: #3498db; 
+            margin-top: 30px; 
+            padding-bottom: 5px; 
+            border-bottom: 1px solid #eee;
+        }
+        h3 { 
+            color: #2980b9; 
+            margin-top: 20px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 20px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 12px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #3498db; 
+            color: white; 
+            font-weight: bold; 
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .command { 
+            background-color: #f6f8fa; 
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .endpoint {
+            font-family: monospace;
+            background-color: #e8f4fc;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid #bce8f1;
+        }
+        .method {
+            display: inline-block;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .get {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .post {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        .put {
+            background-color: #fcf8e3;
+            color: #8a6d3b;
+        }
+        .delete {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Products Module API - cURL Examples</h1>
+    
+    <div class="note">
+        <strong>Note:</strong> Replace <code>YOUR_JWT_TOKEN</code> with a valid JWT token obtained through login. Replace IDs (like <code>PRODUCT_ID</code>) with actual IDs from your database.
+    </div>
+
+    <h2>Main Product Endpoints</h2>
+    
+    <h3><span class="method get">GET</span> Get All Products</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/products?page=1&limit=10" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/PRODUCT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Create New Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/products \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Advanced Surgical Implant",
+    "productCode": "ASI-100",
+    "principle": "PRINCIPLE_ID",
+    "batchNumber": "B12345",
+    "dpValue": 500.00,
+    "mrp": 750.00,
+    "expiryDate": "2026-12-31",
+    "quantity": 20,
+    "description": "High-quality surgical implant with extended durability",
+    "specifications": [
+        {
+            "specName": "Material",
+            "specValue": "Titanium Alloy",
+            "specUnit": ""
+        },
+        {
+            "specName": "Dimensions",
+            "specValue": "10",
+            "specUnit": "mm"
+        }
+    ],
+    "initialInventory": {
+        "quantity": 20,
+        "location": "Main Warehouse"
+    }
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/products/PRODUCT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "Advanced Surgical Implant - Gen 2",
+    "dpValue": 520.00,
+    "mrp": 780.00,
+    "description": "Updated high-quality surgical implant with extended durability and improved finish"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Product (Soft Delete)</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/products/PRODUCT_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Products with Low Inventory</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/low-inventory</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/low-inventory \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Expiring Products</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/expiring-soon</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/products/expiring-soon?days=90" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Product Inventory</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:id/inventory</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/PRODUCT_ID/inventory \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Product Usage Statistics</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:id/usage-stats</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/PRODUCT_ID/usage-stats \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Product Alternatives</h2>
+    
+    <h3><span class="method get">GET</span> Get Product Alternatives</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:productId/alternatives</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/PRODUCT_ID/alternatives \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Alternative Product</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:productId/alternatives</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/products/PRODUCT_ID/alternatives \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "alternativeProduct": "ALTERNATIVE_PRODUCT_ID",
+    "compatibilityLevel": "Full",
+    "priceDifference": 50.00,
+    "notes": "Can be used as a direct replacement",
+    "createReverse": true
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Product Alternative</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:productId/alternatives/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/products/PRODUCT_ID/alternatives/ALTERNATIVE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "compatibilityLevel": "Partial",
+    "priceDifference": 75.00,
+    "notes": "Updated compatibility notes - may require additional components"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Product Alternative</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:productId/alternatives/:id</span></p>
+    <div class="command">curl -X DELETE "http://localhost:5000/api/v1/products/PRODUCT_ID/alternatives/ALTERNATIVE_ID?deleteReverse=true" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Products That Have This Product As Alternative</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/products/:productId/alternative-for</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/products/PRODUCT_ID/alternative-for \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Product Inventory Management</h2>
+    
+    <h3><span class="method get">GET</span> Get All Inventory</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/inventory?status=Available" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Inventory Item</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/inventory/INVENTORY_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Add Inventory</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/inventory \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "product": "PRODUCT_ID",
+    "batchNumber": "B12345",
+    "location": "Main Warehouse",
+    "quantity": 50,
+    "dpValue": 500.00,
+    "expiryDate": "2026-12-31",
+    "receivedDate": "2025-01-15",
+    "notes": "Received from quarterly shipment"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Inventory</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/inventory/INVENTORY_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "quantity": 45,
+    "location": "Satellite Warehouse",
+    "notes": "Moved 5 units to different location"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Inventory Status</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory/:id/status</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/inventory/INVENTORY_ID/status \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "status": "Expired",
+    "notes": "Product expired before use",
+    "referenceId": "OPTIONAL_REFERENCE_ID",
+    "referenceType": "adjustment"
+}'</div>
+
+    <h3><span class="method get">GET</span> Get Inventory Transactions</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory/transactions</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/inventory/transactions?transactionType=Transfer" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Inventory Summary</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/inventory/summary</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/inventory/summary \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h2>Product Usage</h2>
+    
+    <h3><span class="method get">GET</span> Get All Product Usage</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/product-usage?page=1&limit=10" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Single Product Usage</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage/:id</span></p>
+    <div class="command">curl -X GET http://localhost:5000/api/v1/product-usage/USAGE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method post">POST</span> Record Product Usage</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage</span></p>
+    <div class="command">curl -X POST http://localhost:5000/api/v1/product-usage \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "product": "PRODUCT_ID",
+    "case": "CASE_ID",
+    "quantity": 2,
+    "batchNumber": "B12345",
+    "usedDate": "2025-04-15",
+    "dpValue": 500.00,
+    "sellingPrice": 750.00,
+    "notes": "Used during surgery"
+}'</div>
+
+    <h3><span class="method put">PUT</span> Update Product Usage</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage/:id</span></p>
+    <div class="command">curl -X PUT http://localhost:5000/api/v1/product-usage/USAGE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+    "sellingPrice": 780.00,
+    "notes": "Updated price due to special case requirements"
+}'</div>
+
+    <h3><span class="method delete">DELETE</span> Delete Product Usage</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage/:id</span></p>
+    <div class="command">curl -X DELETE http://localhost:5000/api/v1/product-usage/USAGE_ID \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <h3><span class="method get">GET</span> Get Usage Statistics</h3>
+    <p>Endpoint: <span class="endpoint">/api/v1/product-usage/statistics</span></p>
+    <div class="command">curl -X GET "http://localhost:5000/api/v1/product-usage/statistics?startDate=2025-01-01&endDate=2025-04-01" \
+-H "Authorization: Bearer YOUR_JWT_TOKEN"</div>
+
+    <script>
+        // Add copy to clipboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const commands = document.querySelectorAll('.command');
+            
+            commands.forEach(command => {
+                command.addEventListener('click', function() {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(this);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    document.execCommand('copy');
+                    selection.removeAllRanges();
+                    
+                    // Visual feedback
+                    const originalBg = this.style.backgroundColor;
+                    this.style.backgroundColor = '#d4edda';
+                    setTimeout(() => {
+                        this.style.backgroundColor = originalBg;
+                    }, 300);
+                });
+                
+                // Add a subtle hint that these are clickable
+                command.title = 'Click to copy to clipboard';
+                command.style.cursor = 'pointer';
+            });
+        });
+    </script>
+</body>
+</html>
