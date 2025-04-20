@@ -33,6 +33,9 @@ const productUsageRoutes = require('./routes/productUsage.routes');
 const departmentRoutes = require('./routes/department.routes');
 const doctorRoutes = require('./routes/doctor.routes');
 const hospitalRoutes = require('./routes/hospital.routes');
+
+// Add this with the other route imports
+const caseRoutes = require('./routes/case.routes');
 // Import error middleware
 const { errorHandler } = require('./middlewares/error.middleware');
 
@@ -98,6 +101,10 @@ app.use('/api/v1/product-usage', productUsageRoutes);
 app.use('/api/v1/departments', departmentRoutes);
 app.use('/api/v1/doctors', doctorRoutes);
 app.use('/api/v1/hospitals', hospitalRoutes);
+app.use('/api/v1/cases', caseRoutes);
+
+
+
 // Base route
 app.get('/', (req, res) => {
   res.status(200).json({

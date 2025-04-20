@@ -522,7 +522,177 @@ updateProductAlternative: Joi.object({
   compatibilityLevel: Joi.string().valid('Full', 'Partial', 'Emergency Only'),
   priceDifference: Joi.number(),
   notes: Joi.string()
+}),
+
+// Add these case validation schemas to the existing schemas object in utils/validation.js
+
+// Case validation schemas
+createCase: Joi.object({
+  caseNumber: Joi.string(),  // Optional, system will generate if not provided
+  patientName: Joi.string().max(100).required()
+    .messages({
+      'string.max': 'Patient name cannot be more than 100 characters',
+      'any.required': 'Patient name is required'
+    }),
+  patientAge: Joi.number().min(0)
+    .messages({
+      'number.min': 'Age cannot be negative'
+    }),
+  patientGender: Joi.string().valid('Male', 'Female', 'Other'),
+  surgeryDate: Joi.date().required()
+    .messages({
+      'any.required': 'Surgery date is required'
+    }),
+  hospital: Joi.string().required()
+    .messages({
+      'any.required': 'Hospital is required'
+    }),
+  doctor: Joi.string().required()
+    .messages({
+      'any.required': 'Doctor is required'
+    }),
+  principle: Joi.string().required()
+    .messages({
+      'any.required': 'Principle is required'
+    }),
+  category: Joi.string().required()
+    .messages({
+      'any.required': 'Category is required'
+    }),
+  subcategory: Joi.string(),
+  dpValue: Joi.number().min(0),
+  sellingPrice: Joi.number().min(0),
+  status: Joi.string().valid('Active', 'Completed', 'Cancelled', 'Pending').default('Active'),
+  notes: Joi.string(),
+  note: Joi.string(),  // Initial note to be added
+  products: Joi.array().items(
+    Joi.object({
+      product: Joi.string().required()
+        .messages({
+          'any.required': 'Product ID is required'
+        }),
+      quantity: Joi.number().min(1).default(1)
+        .messages({
+          'number.min': 'Quantity must be at least 1'
+        }),
+      unit_price: Joi.number().min(0).required()
+        .messages({
+          'number.min': 'Unit price cannot be negative',
+          'any.required': 'Unit price is required'
+        }),
+      dp_value: Joi.number().min(0).required()
+        .messages({
+          'number.min': 'DP value cannot be negative',
+          'any.required': 'DP value is required'
+        }),
+      batch_number: Joi.string().max(50)
+        .messages({
+          'string.max': 'Batch number cannot be more than 50 characters'
+        }),
+      used_from_inventory: Joi.boolean().default(true)
+    })
+  )
+}),
+
+updateCase: Joi.object({
+  patientName: Joi.string().max(100)
+    .messages({
+      'string.max': 'Patient name cannot be more than 100 characters'
+    }),
+  patientAge: Joi.number().min(0)
+    .messages({
+      'number.min': 'Age cannot be negative'
+    }),
+  patientGender: Joi.string().valid('Male', 'Female', 'Other'),
+  surgeryDate: Joi.date(),
+  hospital: Joi.string(),
+  doctor: Joi.string(),
+  principle: Joi.string(),
+  category: Joi.string(),
+  subcategory: Joi.string(),
+  dpValue: Joi.number().min(0),
+  sellingPrice: Joi.number().min(0),
+  status: Joi.string().valid('Active', 'Completed', 'Cancelled', 'Pending'),
+  notes: Joi.string(),
+  note: Joi.string(),  // Additional note to be added
+  statusNote: Joi.string()  // Note for status change
+}),
+
+updateCaseStatus: Joi.object({
+  status: Joi.string().valid('Active', 'Completed', 'Cancelled', 'Pending').required()
+    .messages({
+      'any.required': 'Status is required',
+      'any.only': 'Status must be one of: Active, Completed, Cancelled, Pending'
+    }),
+  notes: Joi.string()
+}),
+
+addCaseProduct: Joi.object({
+  product: Joi.string().required()
+    .messages({
+      'any.required': 'Product ID is required'
+    }),
+  quantity: Joi.number().min(1).default(1)
+    .messages({
+      'number.min': 'Quantity must be at least 1'
+    }),
+  unit_price: Joi.number().min(0).required()
+    .messages({
+      'number.min': 'Unit price cannot be negative',
+      'any.required': 'Unit price is required'
+    }),
+  dp_value: Joi.number().min(0).required()
+    .messages({
+      'number.min': 'DP value cannot be negative',
+      'any.required': 'DP value is required'
+    }),
+  batch_number: Joi.string().max(50)
+    .messages({
+      'string.max': 'Batch number cannot be more than 50 characters'
+    }),
+  used_from_inventory: Joi.boolean().default(true)
+}),
+
+addCaseNote: Joi.object({
+  noteText: Joi.string().required()
+    .messages({
+      'any.required': 'Note text is required'
+    })
+}),
+
+uploadCaseDocument: Joi.object({
+  documentName: Joi.string().required().max(255)
+    .messages({
+      'any.required': 'Document name is required',
+      'string.max': 'Document name cannot be more than 255 characters'
+    }),
+  documentType: Joi.string().max(100)
+    .messages({
+      'string.max': 'Document type cannot be more than 100 characters'
+    }),
+  filePath: Joi.string().required().max(500)
+    .messages({
+      'any.required': 'File path is required',
+      'string.max': 'File path cannot be more than 500 characters'
+    })
+}),
+
+addCaseFollowup: Joi.object({
+  followupDate: Joi.date().required()
+    .messages({
+      'any.required': 'Follow-up date is required'
+    }),
+  description: Joi.string(),
+  status: Joi.string().valid('Pending', 'Completed', 'Cancelled').default('Pending')
+}),
+
+updateCaseFollowup: Joi.object({
+  followupDate: Joi.date(),
+  description: Joi.string(),
+  status: Joi.string().valid('Pending', 'Completed', 'Cancelled')
 })
+
+
 };
 
 module.exports = {
