@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .method {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: white;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #61affe;
+        }
+        .post {
+            background-color: #49cc90;
+        }
+        .put {
+            background-color: #fca130;
+        }
+        .delete {
+            background-color: #f93e3e;
+        }
+        .endpoint {
+            font-family: 'Courier New', Courier, monospace;
+            padding: 2px 4px;
+            background-color: #f3f3f3;
+            border-radius: 4px;
+        }
+        .description {
+            margin-bottom: 15px;
+        }
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .params-table th, .params-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .params-table th {
+            background-color: #f2f2f2;
+        }
+        .response {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .category {
+            margin-top: 40px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .note {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffca28;
+            padding: 10px 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hospital API Documentation</h1>
+    <p>This documentation provides details about the Hospital API endpoints, including request parameters, headers, and example curl commands.</p>
+    
+    <div class="note">
+        <strong>Note:</strong> For all authenticated endpoints, include the Authorization header with a valid JWT token. In the examples below, replace <code>{YOUR_TOKEN}</code> with your actual token, and replace <code>{BASE_URL}</code> with your API base URL (e.g., http://localhost:5000).
+    </div>
+
+    <div class="category">
+        <h2>Hospital Management</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals</span></h3>
+        <div class="description">Get all hospitals with optional filtering and pagination</div>
+        
+        <h4>Query Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>String</td>
+                <td>Filter hospitals by city (case-insensitive partial match)</td>
+            </tr>
+            <tr>
+                <td>state</td>
+                <td>String</td>
+                <td>Filter hospitals by state (case-insensitive partial match)</td>
+            </tr>
+            <tr>
+                <td>isActive</td>
+                <td>Boolean</td>
+                <td>Filter hospitals by active status ('true' or 'false')</td>
+            </tr>
+            <tr>
+                <td>page</td>
+                <td>Number</td>
+                <td>Page number for pagination (default: 1)</td>
+            </tr>
+            <tr>
+                <td>limit</td>
+                <td>Number</td>
+                <td>Results per page for pagination (default: 10)</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals?city=Mumbai&state=Maharashtra&isActive=true&page=1&limit=10" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "pagination": {
+    "next": {
+      "page": 2,
+      "limit": 10
+    }
+  },
+  "total": 15,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3c",
+      "name": "City General Hospital",
+      "email": "contact@citygeneral.com",
+      "phone": "+91 9876543210",
+      "address": "123 Main Road, Andheri",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400053",
+      "isActive": true,
+      "createdAt": "2023-05-23T10:30:45.123Z",
+      "updatedAt": "2023-05-23T10:30:45.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3d",
+      "name": "Metro Multispeciality Hospital",
+      "email": "info@metrohospital.com",
+      "phone": "+91 9876543211",
+      "address": "456 Link Road, Bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "isActive": true,
+      "createdAt": "2023-05-23T11:15:22.456Z",
+      "updatedAt": "2023-05-23T11:15:22.456Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}</span></h3>
+        <div class="description">Get a single hospital by ID</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b3c",
+    "name": "City General Hospital",
+    "email": "contact@citygeneral.com",
+    "phone": "+91 9876543210",
+    "address": "123 Main Road, Andheri",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "pincode": "400053",
+    "isActive": true,
+    "createdAt": "2023-05-23T10:30:45.123Z",
+    "updatedAt": "2023-05-23T10:30:45.123Z"
+  }
+}</code></pre>
+
+        <h3><span class="method post">POST</span> <span class="endpoint">/api/v1/hospitals</span></h3>
+        <div class="description">Create a new hospital</div>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>String</td>
+                <td>Hospital name</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>String</td>
+                <td>Hospital email</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>phone</td>
+                <td>String</td>
+                <td>Hospital phone number</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>address</td>
+                <td>String</td>
+                <td>Hospital address</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>String</td>
+                <td>Hospital city</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>state</td>
+                <td>String</td>
+                <td>Hospital state</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>pincode</td>
+                <td>String</td>
+                <td>Hospital pincode</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>isActive</td>
+                <td>Boolean</td>
+                <td>Hospital active status</td>
+                <td>No (default: true)</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X POST "{BASE_URL}/api/v1/hospitals" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "name": "Apollo Medical Center",
+       "email": "contact@apollomedical.com",
+       "phone": "+91 9876543212",
+       "address": "789 Hospital Road",
+       "city": "Bangalore",
+       "state": "Karnataka",
+       "pincode": "560001",
+       "isActive": true
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b3e",
+    "name": "Apollo Medical Center",
+    "email": "contact@apollomedical.com",
+    "phone": "+91 9876543212",
+    "address": "789 Hospital Road",
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "pincode": "560001",
+    "isActive": true,
+    "createdBy": "60a1b12c9f1b2c001f8e6b01",
+    "createdAt": "2023-05-23T12:45:33.789Z",
+    "updatedAt": "2023-05-23T12:45:33.789Z"
+  }
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}</span></h3>
+        <div class="description">Update an existing hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <p>Include any fields you want to update</p>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3e" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "name": "Apollo Medical Center & Research Institute",
+       "email": "info@apollomedical.com",
+       "phone": "+91 9876543213"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b3e",
+    "name": "Apollo Medical Center & Research Institute",
+    "email": "info@apollomedical.com",
+    "phone": "+91 9876543213",
+    "address": "789 Hospital Road",
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "pincode": "560001",
+    "isActive": true,
+    "createdBy": "60a1b12c9f1b2c001f8e6b01",
+    "createdAt": "2023-05-23T12:45:33.789Z",
+    "updatedAt": "2023-05-23T13:20:15.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method delete">DELETE</span> <span class="endpoint">/api/v1/hospitals/{id}</span></h3>
+        <div class="description">Delete a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X DELETE "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3e" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {}
+}</code></pre>
+    </div>
+
+    <div class="category">
+        <h2>Hospital Contacts</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts</span></h3>
+        <div class="description">Get all contacts for a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b40",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "contactName": "Dr. Rajesh Kumar",
+      "designation": "Medical Director",
+      "department": "Administration",
+      "email": "rajesh.kumar@citygeneral.com",
+      "phone": "+91 9876543214",
+      "isPrimary": true,
+      "createdAt": "2023-05-23T14:10:22.123Z",
+      "updatedAt": "2023-05-23T14:10:22.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b41",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "contactName": "Mrs. Priya Sharma",
+      "designation": "HR Manager",
+      "department": "Human Resources",
+      "email": "priya.sharma@citygeneral.com",
+      "phone": "+91 9876543215",
+      "isPrimary": false,
+      "createdAt": "2023-05-23T14:15:45.789Z",
+      "updatedAt": "2023-05-23T14:15:45.789Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts/{contactId}</span></h3>
+        <div class="description">Get a single hospital contact</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>contactId</td>
+                <td>Contact ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts/60a1b12c9f1b2c001f8e6b40" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b40",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "contactName": "Dr. Rajesh Kumar",
+    "designation": "Medical Director",
+    "department": "Administration",
+    "email": "rajesh.kumar@citygeneral.com",
+    "phone": "+91 9876543214",
+    "isPrimary": true,
+    "createdAt": "2023-05-23T14:10:22.123Z",
+    "updatedAt": "2023-05-23T14:10:22.123Z"
+  }
+}</code></pre>
+
+        <h3><span class="method post">POST</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts</span></h3>
+        <div class="description">Add a new contact to a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>contactName</td>
+                <td>String</td>
+                <td>Name of the contact person</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>designation</td>
+                <td>String</td>
+                <td>Designation of the contact person</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>department</td>
+                <td>String</td>
+                <td>Department of the contact person</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>String</td>
+                <td>Email of the contact person</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>phone</td>
+                <td>String</td>
+                <td>Phone number of the contact person</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>isPrimary</td>
+                <td>Boolean</td>
+                <td>Whether this is the primary contact</td>
+                <td>No (default: false)</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X POST "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "contactName": "Dr. Meera Patel",
+       "designation": "Chief of Surgery",
+       "department": "Surgery",
+       "email": "meera.patel@citygeneral.com",
+       "phone": "+91 9876543216",
+       "isPrimary": false
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b42",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "contactName": "Dr. Meera Patel",
+    "designation": "Chief of Surgery",
+    "department": "Surgery",
+    "email": "meera.patel@citygeneral.com",
+    "phone": "+91 9876543216",
+    "isPrimary": false,
+    "createdAt": "2023-05-23T14:30:15.456Z",
+    "updatedAt": "2023-05-23T14:30:15.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts/{contactId}</span></h3>
+        <div class="description">Update a hospital contact</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>contactId</td>
+                <td>Contact ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <p>Include any fields you want to update</p>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts/60a1b12c9f1b2c001f8e6b42" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "designation": "Head of Surgery Department",
+       "phone": "+91 9876543217",
+       "isPrimary": true
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b42",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "contactName": "Dr. Meera Patel",
+    "designation": "Head of Surgery Department",
+    "department": "Surgery",
+    "email": "meera.patel@citygeneral.com",
+    "phone": "+91 9876543217",
+    "isPrimary": true,
+    "createdAt": "2023-05-23T14:30:15.456Z",
+    "updatedAt": "2023-05-23T14:45:22.789Z"
+  }
+}</code></pre>
+
+        <h3><span class="method delete">DELETE</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts/{contactId}</span></h3>
+        <div class="description">Delete a hospital contact</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>contactId</td>
+                <td>Contact ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X DELETE "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts/60a1b12c9f1b2c001f8e6b42" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {}
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/contacts/{contactId}/set-primary</span></h3>
+        <div class="description">Set a contact as the primary contact for a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>contactId</td>
+                <td>Contact ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/contacts/60a1b12c9f1b2c001f8e6b41/set-primary" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b41",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "contactName": "Mrs. Priya Sharma",
+    "designation": "HR Manager",
+    "department": "Human Resources",
+    "email": "priya.sharma@citygeneral.com",
+    "phone": "+91 9876543215",
+    "isPrimary": true,
+    "createdAt": "2023-05-23T14:15:45.789Z",
+    "updatedAt": "2023-05-23T15:00:10.456Z"
+  }
+}</code></pre>
+    </div>
+
+    <div class="category">
+        <h2>Hospital Departments</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/departments</span></h3>
+        <div class="description">Get all departments for a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/departments" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b50",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "departmentName": "Cardiology",
+      "deptHead": "Dr. Vikas Singh",
+      "phone": "+91 9876543218",
+      "email": "cardiology@citygeneral.com",
+      "locationWithinHospital": "Block A, 3rd Floor",
+      "createdAt": "2023-05-23T15:30:45.123Z",
+      "updatedAt": "2023-05-23T15:30:45.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b51",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "departmentName": "Neurology",
+      "deptHead": "Dr. Anita Desai",
+      "phone": "+91 9876543219",
+      "email": "neurology@citygeneral.com",
+      "locationWithinHospital": "Block B, 2nd Floor",
+      "createdAt": "2023-05-23T15:35:22.456Z",
+      "updatedAt": "2023-05-23T15:35:22.456Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method post">POST</span> <span class="endpoint">/api/v1/hospitals/{id}/departments</span></h3>
+        <div class="description">Add a new department to a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>departmentName</td>
+                <td>String</td>
+                <td>Name of the department</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>deptHead</td>
+                <td>String</td>
+                <td>Name of the department head</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>phone</td>
+                <td>String</td>
+                <td>Department phone number</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>String</td>
+                <td>Department email</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>locationWithinHospital</td>
+                <td>String</td>
+                <td>Department's physical location within the hospital</td>
+                <td>No</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X POST "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/departments" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "departmentName": "Oncology",
+       "deptHead": "Dr. Sunil Mehta",
+       "phone": "+91 9876543220",
+       "email": "oncology@citygeneral.com",
+       "locationWithinHospital": "Block C, 4th Floor"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b52",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "departmentName": "Oncology",
+    "deptHead": "Dr. Sunil Mehta",
+    "phone": "+91 9876543220",
+    "email": "oncology@citygeneral.com",
+    "locationWithinHospital": "Block C, 4th Floor",
+    "createdAt": "2023-05-23T15:45:33.789Z",
+    "updatedAt": "2023-05-23T15:45:33.789Z"
+  }
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/departments/{departmentId}</span></h3>
+        <div class="description">Update a hospital department</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>departmentId</td>
+                <td>Department ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <p>Include any fields you want to update</p>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/departments/60a1b12c9f1b2c001f8e6b52" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "deptHead": "Dr. Sunil Mehta, MD",
+       "locationWithinHospital": "Block C, 5th Floor"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b52",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "departmentName": "Oncology",
+    "deptHead": "Dr. Sunil Mehta, MD",
+    "phone": "+91 9876543220",
+    "email": "oncology@citygeneral.com",
+    "locationWithinHospital": "Block C, 5th Floor",
+    "createdAt": "2023-05-23T15:45:33.789Z",
+    "updatedAt": "2023-05-23T16:00:15.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method delete">DELETE</span> <span class="endpoint">/api/v1/hospitals/{id}/departments/{departmentId}</span></h3>
+        <div class="description">Delete a hospital department</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>departmentId</td>
+                <td>Department ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X DELETE "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/departments/60a1b12c9f1b2c001f8e6b52" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {}
+}</code></pre>
+    </div>
+
+    <div class="category">
+        <h2>Hospital Visits</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/visits</span></h3>
+        <div class="description">Get all visits for a hospital with optional filtering</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Query Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>startDate</td>
+                <td>Date</td>
+                <td>Filter visits after this date (format: YYYY-MM-DD)</td>
+            </tr>
+            <tr>
+                <td>endDate</td>
+                <td>Date</td>
+                <td>Filter visits before this date (format: YYYY-MM-DD)</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>String</td>
+                <td>Filter by visit status ('Planned', 'Completed', 'Cancelled', 'Rescheduled')</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/visits?startDate=2023-01-01&endDate=2023-12-31&status=Completed" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b60",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "visitor": {
+        "_id": "60a1b12c9f1b2c001f8e6b02",
+        "name": "John Smith"
+      },
+      "visitDate": "2023-05-15T10:30:00.000Z",
+      "contactMet": "Dr. Rajesh Kumar",
+      "purpose": "Product demonstration",
+      "outcome": "Positive response, requested additional information",
+      "followUpDate": "2023-05-30T00:00:00.000Z",
+      "followUpAction": "Send product specifications and pricing",
+      "status": "Completed",
+      "createdAt": "2023-05-16T09:45:12.345Z",
+      "updatedAt": "2023-05-16T15:22:33.456Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b61",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "visitor": {
+        "_id": "60a1b12c9f1b2c001f8e6b03",
+        "name": "Sarah Johnson"
+      },
+      "visitDate": "2023-05-18T14:15:00.000Z",
+      "contactMet": "Mrs. Priya Sharma",
+      "purpose": "Contract negotiation",
+      "outcome": "Initial agreement reached on terms",
+      "followUpDate": "2023-06-05T00:00:00.000Z",
+      "followUpAction": "Send draft contract for review",
+      "status": "Completed",
+      "createdAt": "2023-05-19T10:12:45.678Z",
+      "updatedAt": "2023-05-19T16:30:22.789Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/visits/{visitId}</span></h3>
+        <div class="description">Get a single hospital visit</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>visitId</td>
+                <td>Visit ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/visits/60a1b12c9f1b2c001f8e6b60" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b60",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "visitor": {
+      "_id": "60a1b12c9f1b2c001f8e6b02",
+      "name": "John Smith"
+    },
+    "visitDate": "2023-05-15T10:30:00.000Z",
+    "contactMet": "Dr. Rajesh Kumar",
+    "purpose": "Product demonstration",
+    "outcome": "Positive response, requested additional information",
+    "followUpDate": "2023-05-30T00:00:00.000Z",
+    "followUpAction": "Send product specifications and pricing",
+    "status": "Completed",
+    "createdAt": "2023-05-16T09:45:12.345Z",
+    "updatedAt": "2023-05-16T15:22:33.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method post">POST</span> <span class="endpoint">/api/v1/hospitals/{id}/visits</span></h3>
+        <div class="description">Record a new visit to a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>visitDate</td>
+                <td>Date</td>
+                <td>Date and time of the visit</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>contactMet</td>
+                <td>String</td>
+                <td>Name of the contact person met</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>purpose</td>
+                <td>String</td>
+                <td>Purpose of the visit</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>outcome</td>
+                <td>String</td>
+                <td>Outcome of the visit</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>followUpDate</td>
+                <td>Date</td>
+                <td>Date for follow-up</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>followUpAction</td>
+                <td>String</td>
+                <td>Action needed for follow-up</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>String</td>
+                <td>Status of the visit (Planned, Completed, Cancelled, Rescheduled)</td>
+                <td>No (default: 'Completed')</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X POST "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/visits" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "visitDate": "2023-05-25T11:00:00.000Z",
+       "contactMet": "Dr. Meera Patel",
+       "purpose": "Follow-up on product demo",
+       "outcome": "Agreed to trial the product in surgery department",
+       "followUpDate": "2023-06-15",
+       "followUpAction": "Arrange product delivery and training",
+       "status": "Completed"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b62",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "visitor": "60a1b12c9f1b2c001f8e6b01",
+    "visitDate": "2023-05-25T11:00:00.000Z",
+    "contactMet": "Dr. Meera Patel",
+    "purpose": "Follow-up on product demo",
+    "outcome": "Agreed to trial the product in surgery department",
+    "followUpDate": "2023-06-15T00:00:00.000Z",
+    "followUpAction": "Arrange product delivery and training",
+    "status": "Completed",
+    "createdAt": "2023-05-25T16:45:22.345Z",
+    "updatedAt": "2023-05-25T16:45:22.345Z"
+  }
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/visits/{visitId}</span></h3>
+        <div class="description">Update a hospital visit</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>visitId</td>
+                <td>Visit ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <p>Include any fields you want to update</p>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/visits/60a1b12c9f1b2c001f8e6b62" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "outcome": "Agreed to trial the product in surgery department for 3 months",
+       "followUpAction": "Arrange product delivery, training, and set evaluation criteria"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b62",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "visitor": "60a1b12c9f1b2c001f8e6b01",
+    "visitDate": "2023-05-25T11:00:00.000Z",
+    "contactMet": "Dr. Meera Patel",
+    "purpose": "Follow-up on product demo",
+    "outcome": "Agreed to trial the product in surgery department for 3 months",
+    "followUpDate": "2023-06-15T00:00:00.000Z",
+    "followUpAction": "Arrange product delivery, training, and set evaluation criteria",
+    "status": "Completed",
+    "createdAt": "2023-05-25T16:45:22.345Z",
+    "updatedAt": "2023-05-25T17:10:33.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method delete">DELETE</span> <span class="endpoint">/api/v1/hospitals/{id}/visits/{visitId}</span></h3>
+        <div class="description">Delete a hospital visit</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>visitId</td>
+                <td>Visit ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X DELETE "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/visits/60a1b12c9f1b2c001f8e6b62" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {}
+}</code></pre>
+    </div>
+
+    <div class="category">
+        <h2>Hospital Agreements</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements</span></h3>
+        <div class="description">Get all agreements for a hospital with optional filtering</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Query Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>String</td>
+                <td>Filter by agreement status ('Active', 'Expired', 'Cancelled', 'Pending')</td>
+            </tr>
+            <tr>
+                <td>agreementType</td>
+                <td>String</td>
+                <td>Filter by agreement type</td>
+            </tr>
+            <tr>
+                <td>startDate</td>
+                <td>Date</td>
+                <td>Filter agreements starting after this date (format: YYYY-MM-DD)</td>
+            </tr>
+            <tr>
+                <td>endDate</td>
+                <td>Date</td>
+                <td>Filter agreements ending before this date (format: YYYY-MM-DD)</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements?status=Active&agreementType=Supply" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b70",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "agreementType": "Supply",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2023-12-31T00:00:00.000Z",
+      "terms": "Monthly supply of surgical instruments",
+      "discountPercentage": 10,
+      "paymentTerms": "Net 30",
+      "status": "Active",
+      "documentPath": "/agreements/60a1b12c9f1b2c001f8e6b70.pdf",
+      "createdBy": {
+        "_id": "60a1b12c9f1b2c001f8e6b01",
+        "name": "Admin User"
+      },
+      "createdAt": "2023-01-02T09:30:15.123Z",
+      "updatedAt": "2023-01-02T09:30:15.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b71",
+      "hospital": "60a1b12c9f1b2c001f8e6b3c",
+      "agreementType": "Supply",
+      "startDate": "2023-03-01T00:00:00.000Z",
+      "endDate": "2024-02-29T00:00:00.000Z",
+      "terms": "Quarterly supply of cardiac devices",
+      "discountPercentage": 15,
+      "paymentTerms": "Net 45",
+      "status": "Active",
+      "documentPath": "/agreements/60a1b12c9f1b2c001f8e6b71.pdf",
+      "createdBy": {
+        "_id": "60a1b12c9f1b2c001f8e6b01",
+        "name": "Admin User"
+      },
+      "createdAt": "2023-02-15T14:22:33.456Z",
+      "updatedAt": "2023-02-15T14:22:33.456Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements/{agreementId}</span></h3>
+        <div class="description">Get a single hospital agreement</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>agreementId</td>
+                <td>Agreement ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements/60a1b12c9f1b2c001f8e6b70" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b70",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "agreementType": "Supply",
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "endDate": "2023-12-31T00:00:00.000Z",
+    "terms": "Monthly supply of surgical instruments",
+    "discountPercentage": 10,
+    "paymentTerms": "Net 30",
+    "status": "Active",
+    "documentPath": "/agreements/60a1b12c9f1b2c001f8e6b70.pdf",
+    "createdBy": {
+      "_id": "60a1b12c9f1b2c001f8e6b01",
+      "name": "Admin User"
+    },
+    "createdAt": "2023-01-02T09:30:15.123Z",
+    "updatedAt": "2023-01-02T09:30:15.123Z"
+  }
+}</code></pre>
+
+        <h3><span class="method post">POST</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements</span></h3>
+        <div class="description">Add a new agreement with a hospital</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>agreementType</td>
+                <td>String</td>
+                <td>Type of agreement</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>startDate</td>
+                <td>Date</td>
+                <td>Start date of the agreement</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>endDate</td>
+                <td>Date</td>
+                <td>End date of the agreement</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>terms</td>
+                <td>String</td>
+                <td>Terms of the agreement</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>discountPercentage</td>
+                <td>Number</td>
+                <td>Discount percentage (0-100)</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>paymentTerms</td>
+                <td>String</td>
+                <td>Payment terms</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>String</td>
+                <td>Status of the agreement (Active, Expired, Cancelled, Pending)</td>
+                <td>No (default: 'Active')</td>
+            </tr>
+            <tr>
+                <td>documentPath</td>
+                <td>String</td>
+                <td>Path to the agreement document</td>
+                <td>No</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X POST "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "agreementType": "Service",
+       "startDate": "2023-06-01",
+       "endDate": "2024-05-31",
+       "terms": "Annual maintenance of diagnostic equipment",
+       "discountPercentage": 12,
+       "paymentTerms": "Quarterly",
+       "status": "Active"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b72",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "agreementType": "Service",
+    "startDate": "2023-06-01T00:00:00.000Z",
+    "endDate": "2024-05-31T00:00:00.000Z",
+    "terms": "Annual maintenance of diagnostic equipment",
+    "discountPercentage": 12,
+    "paymentTerms": "Quarterly",
+    "status": "Active",
+    "createdBy": "60a1b12c9f1b2c001f8e6b01",
+    "createdAt": "2023-05-25T18:30:45.123Z",
+    "updatedAt": "2023-05-25T18:30:45.123Z"
+  }
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements/{agreementId}</span></h3>
+        <div class="description">Update a hospital agreement</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>agreementId</td>
+                <td>Agreement ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <p>Include any fields you want to update</p>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements/60a1b12c9f1b2c001f8e6b72" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "endDate": "2025-05-31",
+       "terms": "Extended annual maintenance of diagnostic equipment",
+       "discountPercentage": 15
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b72",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "agreementType": "Service",
+    "startDate": "2023-06-01T00:00:00.000Z",
+    "endDate": "2025-05-31T00:00:00.000Z",
+    "terms": "Extended annual maintenance of diagnostic equipment",
+    "discountPercentage": 15,
+    "paymentTerms": "Quarterly",
+    "status": "Active",
+    "createdBy": "60a1b12c9f1b2c001f8e6b01",
+    "createdAt": "2023-05-25T18:30:45.123Z",
+    "updatedAt": "2023-05-25T18:45:33.456Z"
+  }
+}</code></pre>
+
+        <h3><span class="method delete">DELETE</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements/{agreementId}</span></h3>
+        <div class="description">Delete a hospital agreement</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>agreementId</td>
+                <td>Agreement ID</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X DELETE "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements/60a1b12c9f1b2c001f8e6b72" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {}
+}</code></pre>
+
+        <h3><span class="method put">PUT</span> <span class="endpoint">/api/v1/hospitals/{id}/agreements/{agreementId}/status</span></h3>
+        <div class="description">Update the status of a hospital agreement</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>Hospital ID</td>
+            </tr>
+            <tr>
+                <td>agreementId</td>
+                <td>Agreement ID</td>
+            </tr>
+        </table>
+        
+        <h4>Request Body:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>String</td>
+                <td>New status for the agreement (Active, Expired, Cancelled, Pending)</td>
+                <td>Yes</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X PUT "{BASE_URL}/api/v1/hospitals/60a1b12c9f1b2c001f8e6b3c/agreements/60a1b12c9f1b2c001f8e6b72/status" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "status": "Cancelled"
+     }'</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "_id": "60a1b12c9f1b2c001f8e6b72",
+    "hospital": "60a1b12c9f1b2c001f8e6b3c",
+    "agreementType": "Service",
+    "startDate": "2023-06-01T00:00:00.000Z",
+    "endDate": "2025-05-31T00:00:00.000Z",
+    "terms": "Extended annual maintenance of diagnostic equipment",
+    "discountPercentage": 15,
+    "paymentTerms": "Quarterly",
+    "status": "Cancelled",
+    "createdBy": "60a1b12c9f1b2c001f8e6b01",
+    "createdAt": "2023-05-25T18:30:45.123Z",
+    "updatedAt": "2023-05-25T19:00:22.789Z"
+  }
+}</code></pre>
+    </div>
+
+    <div class="category">
+        <h2>Special Hospital Routes</h2>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/by-city/{city}</span></h3>
+        <div class="description">Get all hospitals in a specific city</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>City name</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/by-city/Mumbai" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3c",
+      "name": "City General Hospital",
+      "email": "contact@citygeneral.com",
+      "phone": "+91 9876543210",
+      "address": "123 Main Road, Andheri",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400053",
+      "isActive": true,
+      "createdAt": "2023-05-23T10:30:45.123Z",
+      "updatedAt": "2023-05-23T10:30:45.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3d",
+      "name": "Metro Multispeciality Hospital",
+      "email": "info@metrohospital.com",
+      "phone": "+91 9876543211",
+      "address": "456 Link Road, Bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "isActive": true,
+      "createdAt": "2023-05-23T11:15:22.456Z",
+      "updatedAt": "2023-05-23T11:15:22.456Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/by-state/{state}</span></h3>
+        <div class="description">Get all hospitals in a specific state</div>
+        
+        <h4>Path Parameters:</h4>
+        <table class="params-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>state</td>
+                <td>State name</td>
+            </tr>
+        </table>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/by-state/Maharashtra" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "count": 3,
+  "data": [
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3c",
+      "name": "City General Hospital",
+      "email": "contact@citygeneral.com",
+      "phone": "+91 9876543210",
+      "address": "123 Main Road, Andheri",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400053",
+      "isActive": true,
+      "createdAt": "2023-05-23T10:30:45.123Z",
+      "updatedAt": "2023-05-23T10:30:45.123Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3d",
+      "name": "Metro Multispeciality Hospital",
+      "email": "info@metrohospital.com",
+      "phone": "+91 9876543211",
+      "address": "456 Link Road, Bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "isActive": true,
+      "createdAt": "2023-05-23T11:15:22.456Z",
+      "updatedAt": "2023-05-23T11:15:22.456Z"
+    },
+    {
+      "_id": "60a1b12c9f1b2c001f8e6b3f",
+      "name": "Pune Medical Center",
+      "email": "info@punemedical.com",
+      "phone": "+91 9876543213",
+      "address": "789 MG Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pincode": "411001",
+      "isActive": true,
+      "createdAt": "2023-05-23T11:45:33.789Z",
+      "updatedAt": "2023-05-23T11:45:33.789Z"
+    }
+  ]
+}</code></pre>
+
+        <h3><span class="method get">GET</span> <span class="endpoint">/api/v1/hospitals/upcoming-visits</span></h3>
+        <div class="description">Get upcoming hospital visits and follow-ups across all hospitals</div>
+        
+        <h4>Example curl command:</h4>
+        <pre><code>curl -X GET "{BASE_URL}/api/v1/hospitals/upcoming-visits" \
+     -H "Authorization: Bearer {YOUR_TOKEN}" \
+     -H "Content-Type: application/json"</code></pre>
+
+        <h4>Example Response:</h4>
+        <pre class="response"><code>{
+  "success": true,
+  "data": {
+    "upcomingVisits": {
+      "count": 2,
+      "visits": [
+        {
+          "_id": "60a1b12c9f1b2c001f8e6b63",
+          "hospital": {
+            "_id": "60a1b12c9f1b2c001f8e6b3c",
+            "name": "City General Hospital"
+          },
+          "visitor": {
+            "_id": "60a1b12c9f1b2c001f8e6b01",
+            "name": "Admin User"
+          },
+          "visitDate": "2023-06-05T10:00:00.000Z",
+          "purpose": "Product demonstration",
+          "status": "Planned",
+          "createdAt": "2023-05-25T19:45:22.345Z",
+          "updatedAt": "2023-05-25T19:45:22.345Z"
+        },
+        {
+          "_id": "60a1b12c9f1b2c001f8e6b64",
+          "hospital": {
+            "_id": "60a1b12c9f1b2c001f8e6b3d",
+            "name": "Metro Multispeciality Hospital"
+          },
+          "visitor": {
+            "_id": "60a1b12c9f1b2c001f8e6b02",
+            "name": "John Smith"
+          },
+          "visitDate": "2023-06-10T14:30:00.000Z",
+          "purpose": "Contract renewal discussion",
+          "status": "Planned",
+          "createdAt": "2023-05-25T20:10:33.456Z",
+          "updatedAt": "2023-05-25T20:10:33.456Z"
+        }
+      ]
+    },
+    "pendingFollowUps": {
+      "count": 2,
+      "followUps": [
+        {
+          "_id": "60a1b12c9f1b2c001f8e6b60",
+          "hospital": {
+            "_id": "60a1b12c9f1b2c001f8e6b3c",
+            "name": "City General Hospital"
+          },
+          "visitor": {
+            "_id": "60a1b12c9f1b2c001f8e6b02",
+            "name": "John Smith"
+          },
+          "visitDate": "2023-05-15T10:30:00.000Z",
+          "contactMet": "Dr. Rajesh Kumar",
+          "purpose": "Product demonstration",
+          "outcome": "Positive response, requested additional information",
+          "followUpDate": "2023-05-30T00:00:00.000Z",
+          "followUpAction": "Send product specifications and pricing",
+          "status": "Completed",
+          "createdAt": "2023-05-16T09:45:12.345Z",
+          "updatedAt": "2023-05-16T15:22:33.456Z"
+        },
+        {
+          "_id": "60a1b12c9f1b2c001f8e6b61",
+          "hospital": {
+            "_id": "60a1b12c9f1b2c001f8e6b3c",
+            "name": "City General Hospital"
+          },
+          "visitor": {
+            "_id": "60a1b12c9f1b2c001f8e6b03",
+            "name": "Sarah Johnson"
+          },
+          "visitDate": "2023-05-18T14:15:00.000Z",
+          "contactMet": "Mrs. Priya Sharma",
+          "purpose": "Contract negotiation",
+          "outcome": "Initial agreement reached on terms",
+          "followUpDate": "2023-06-05T00:00:00.000Z",
+          "followUpAction": "Send draft contract for review",
+          "status": "Completed",
+          "createdAt": "2023-05-19T10:12:45.678Z",
+          "updatedAt": "2023-05-19T16:30:22.789Z"
+        }
+      ]
+    }
+  }
+}</code></pre>
+    </div>
+
+    <div class="note">
+        <strong>Authentication Note:</strong> All API endpoints require a valid JWT token. You can obtain a token by logging in through the <code>/api/v1/auth/login</code> endpoint. The token should be included in the Authorization header as a Bearer token.
+    </div>
+
+    <div class="note">
+        <strong>Error Handling:</strong> If an error occurs, the API will return an error response with an appropriate status code and message. Example error response:
+        <pre class="response"><code>{
+  "success": false,
+  "error": "Hospital not found with id of 60a1b12c9f1b2c001f8e6b99"
+}</code></pre>
+    </div>
+
+    <script>
+        // Simple script to make the page more interactive
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to method spans to highlight the current section
+            const methods = document.querySelectorAll('.method');
+            methods.forEach(method => {
+                method.addEventListener('click', function() {
+                    // Find the parent h3 and the following content up to the next h3
+                    const h3 = this.closest('h3');
+                    let currentElement = h3.nextElementSibling;
+                    while (currentElement && currentElement.tagName !== 'H3') {
+                        currentElement.style.backgroundColor = '#f8f9fa';
+                        currentElement = currentElement.nextElementSibling;
+                    }
+                    
+                    // Reset after 1 second
+                    setTimeout(() => {
+                        let resetElement = h3.nextElementSibling;
+                        while (resetElement && resetElement.tagName !== 'H3') {
+                            resetElement.style.backgroundColor = '';
+                            resetElement = resetElement.nextElementSibling;
+                        }
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
