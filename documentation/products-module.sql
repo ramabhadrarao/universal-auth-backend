@@ -2,6 +2,7 @@
 -- Based on the Products List screen from the application
 
 -- Products table - Primary table for medical products
+
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     principle_id INT NOT NULL,
@@ -20,6 +21,7 @@ CREATE TABLE products (
     FOREIGN KEY (principle_id) REFERENCES principles(principle_id),
     FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
+-- principle_id - purchase bill - need to implement 
 
 -- Product specifications - Technical details for products
 CREATE TABLE product_specifications (
@@ -122,7 +124,22 @@ CREATE TABLE product_alternatives (
     FOREIGN KEY (product_id) REFERENCES products(product_id),
     FOREIGN KEY (alternative_product_id) REFERENCES products(product_id)
 );
-
+---  Product inhouse inventory - Track inhouse inventory levels and movements
+create table product_inhouse_inventery (
+    inhouse_inventory_id SERIAL PRIMARY KEY,
+    product_id INT NOT NULL,
+    batch_number VARCHAR(50),
+    location VARCHAR(100),
+    quantity INT NOT NULL,
+    dp_value DECIMAL(10, 2),
+    expiry_date DATE,
+    received_date DATE,
+    status VARCHAR(50) DEFAULT 'Available',
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (updated_by) REFERENCES users(user_id)
+);
 -- TRIGGERS
 
 -- Update timestamp when product record is modified

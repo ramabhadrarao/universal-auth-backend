@@ -10,8 +10,10 @@ CREATE TABLE cases (
     principle_id INT NOT NULL,
     category_id INT NOT NULL,
     subcategory_id INT,
+    
     dp_value DECIMAL(10, 2),  -- Dealer price
     selling_price DECIMAL(10, 2),
+    bd_value DECIMAL(10, 2),  -- Business development value
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
@@ -23,7 +25,37 @@ CREATE TABLE cases (
     FOREIGN KEY (subcategory_id) REFERENCES subcategories(subcategory_id),
     FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
+-- sales person - internal employye / external employee (case introduced) 
+-- delivery person - internal employye / external employee 
+-- OT (Operation theater ) support Person  - Additional information about the case
+-- recovery person - internal employye / external employee
+-- case payment type - invoice / cash / credit / cheque / online payment
 
+create table case_invoice_details (
+    invoice_id SERIAL PRIMARY KEY,
+    case_id INT NOT NULL,
+    invoice_number VARCHAR(100) NOT NULL,
+    invoice_date DATE NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    payment_status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    FOREIGN KEY (case_id) REFERENCES cases(case_id),
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Case history - Track changes in case details
+CREATE TABLE case_history (
+    history_id SERIAL PRIMARY KEY,
+    case_id INT NOT NULL,
+    field_name VARCHAR(100) NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    changed_by INT,
+    FOREIGN KEY (case_id) REFERENCES cases(case_id),
+    FOREIGN KEY (changed_by) REFERENCES users(user_id)
+);
 -- Case products - Products used in each case
 CREATE TABLE case_products (
     case_product_id SERIAL PRIMARY KEY,
@@ -92,6 +124,8 @@ CREATE TABLE case_followups (
     FOREIGN KEY (completed_by) REFERENCES users(user_id)
 );
 
+-- business development cost - text box, amount 
+-- 
 -- TRIGGERS
 
 -- Update timestamp when case is modified
